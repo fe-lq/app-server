@@ -1,0 +1,74 @@
+{
+  "name": "app-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env nodemon --watch 'src/**/*' -e ts --exec 'ts-node' ./src/index.ts",
+    "build": "tsc",
+    "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "push": "prisma db push",
+    "pull": "prisma db pull",
+    "gen": "prisma generate",
+    "prepare": "prisma generate && husky install"
+  },
+  "keywords": [],
+  "author": "LiuQi",
+  "engines": {
+    "node": ">= 7.6"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.10.2",
+    "ali-oss": "^6.20.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "koa": "^2.14.2",
+    "koa-body": "^6.0.1",
+    "koa-jwt": "^4.0.4",
+    "koa-router": "^12.0.0",
+    "koa-static-cache": "^5.1.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "redis": "^4.6.12",
+    "uuid": "^9.0.1",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
+    "@types/ali-oss": "^6.16.11",
+    "@types/crypto-js": "^4.2.1",
+    "@types/jsonwebtoken": "^9.0.4",
+    "@types/koa": "^2.13.6",
+    "@types/koa-router": "^7.4.4",
+    "@types/koa-static-cache": "^5.1.4",
+    "@types/lodash": "^4.14.202",
+    "@types/node": "^20.3.3",
+    "@types/uuid": "^9.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "cross-env": "^7.0.3",
+    "crypto-js": "^4.2.0",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
+    "prisma": "^5.10.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "prisma": {
+    "schema": "public/schema.prisma"
+  }
+}
