@@ -17,10 +17,9 @@ export const ERROR_CODE_MAP = {
   [INTERNAL_SERVER_ERROR]: "服务端错误"
 };
 
-export const JWT_SECRET_KEY = "JWT_TOKEN";
-
-/** 对称加密key, 要与前端使用的相同 */
-export const PASSWORD_SECRET_KEY = "PASSWORD";
+export const APP_ID = "wx62e130a086263c6c";
+export const APP_SECRET = "c9cef0cd24881d046093e35fa558dacc";
+export const WX_TOKEN_KEY = "wx_access_token";
 
 /**
  * token有效期
@@ -30,3 +29,5 @@ export const TOKEN_EXPIRED_TIME = 60 * 60 * 24; // 1天;
  * token刷新时间范围
  */
 export const TOKEN_REFRESH_TIME = 60 * 2;
+
+export const JWT_SECRET_KEY = "JWT_TOKEN";

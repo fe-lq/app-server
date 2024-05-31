@@ -1,0 +1,625 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"WxUser": {
+				"properties": {
+					"code": {
+						"type": "string",
+						"description": "微信授权code"
+					},
+					"userPhone": {
+						"type": "string",
+						"description": "用户手机号"
+					}
+				},
+				"required": [
+					"code",
+					"userPhone"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"userName": {
+						"type": "string",
+						"description": "用户名"
+					},
+					"userPhone": {
+						"type": "string",
+						"description": "用户手机号"
+					},
+					"userAvatar": {
+						"type": "string",
+						"description": "用户头像"
+					},
+					"userSex": {
+						"type": "string",
+						"enum": [
+							"MALE",
+							"FEMALE",
+							"UNKNOWN"
+						],
+						"description": "用户性别"
+					},
+					"userAddress": {
+						"type": "string",
+						"description": "用户地址"
+					},
+					"userBirthday": {
+						"type": "string",
+						"description": "用户生日"
+					}
+				},
+				"required": [
+					"userName",
+					"userPhone",
+					"userAvatar"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Goods": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double",
+						"description": "商品ID"
+					},
+					"goodsTypeId": {
+						"type": "number",
+						"format": "double",
+						"description": "商品类型ID"
+					},
+					"goodsName": {
+						"type": "string",
+						"description": "商品名称"
+					},
+					"goodsAmount": {
+						"type": "number",
+						"format": "double",
+						"description": "商品库存"
+					},
+					"goodsPrice": {
+						"type": "number",
+						"format": "double",
+						"description": "商品价格"
+					},
+					"goodsMarkPrice": {
+						"type": "number",
+						"format": "double",
+						"description": "商品划线价格"
+					},
+					"goodsCostPrice": {
+						"type": "number",
+						"format": "double",
+						"description": "商品成本价"
+					},
+					"goodsDesc": {
+						"type": "string",
+						"description": "商品描述"
+					},
+					"goodsImgs": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"description": "商品图片"
+					},
+					"goodsSellCount": {
+						"type": "number",
+						"format": "double",
+						"description": "商品已售量"
+					},
+					"goodsCreate": {
+						"type": "string",
+						"description": "商品创建时间"
+					},
+					"goodsUpdate": {
+						"type": "string",
+						"description": "商品更新时间"
+					},
+					"goodsUser": {
+						"type": "string",
+						"description": "商品所属用户"
+					},
+					"goodsUserId": {
+						"type": "number",
+						"format": "double",
+						"description": "商品所属用户id"
+					},
+					"goodsComments": {
+						"items": {},
+						"type": "array",
+						"description": "商品评论"
+					}
+				},
+				"required": [
+					"id",
+					"goodsTypeId",
+					"goodsName",
+					"goodsAmount",
+					"goodsPrice",
+					"goodsMarkPrice",
+					"goodsCostPrice",
+					"goodsImgs",
+					"goodsSellCount",
+					"goodsCreate",
+					"goodsUpdate",
+					"goodsComments"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Category": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double",
+						"description": "分类id"
+					},
+					"typeName": {
+						"type": "string",
+						"description": "分类名称"
+					},
+					"typeImg": {
+						"type": "string",
+						"description": "分类图片"
+					},
+					"typeEnable": {
+						"type": "boolean",
+						"description": "是否启用"
+					},
+					"typeParentId": {
+						"type": "number",
+						"format": "double",
+						"description": "父级分类id"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/Category"
+						},
+						"type": "array",
+						"description": "子类"
+					}
+				},
+				"required": [
+					"id",
+					"typeName",
+					"typeEnable"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoodsResponseLimit": {
+				"properties": {
+					"records": {
+						"$ref": "#/components/schemas/Goods",
+						"description": "商品列表"
+					},
+					"total": {
+						"type": "number",
+						"format": "double",
+						"description": "总条数"
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "当前页码"
+					},
+					"pageSize": {
+						"type": "number",
+						"format": "double",
+						"description": "每页显示的条数"
+					}
+				},
+				"required": [
+					"records",
+					"total",
+					"page",
+					"pageSize"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoodsRequest": {
+				"properties": {
+					"goodsTypeId": {
+						"type": "number",
+						"format": "double",
+						"description": "商品类型ID"
+					},
+					"goodsName": {
+						"type": "string",
+						"description": "商品名称"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoodsRequestLimit": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/GoodsRequest"
+					},
+					{
+						"properties": {
+							"page": {
+								"type": "number",
+								"format": "double",
+								"description": "当前页码"
+							},
+							"pageSize": {
+								"type": "number",
+								"format": "double",
+								"description": "每页显示的条数"
+							}
+						},
+						"required": [
+							"page",
+							"pageSize"
+						],
+						"type": "object"
+					}
+				]
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "tsoa-api",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "LiuQi"
+		}
+	},
+	"paths": {
+		"/user/login": {
+			"post": {
+				"operationId": "登录",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"token": {}
+									},
+									"required": [
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "用户登录接口",
+				"tags": [
+					"用户相关接口"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/WxUser"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/update": {
+			"post": {
+				"operationId": "修改用户信息",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "修改用户信息接口",
+				"tags": [
+					"用户相关接口"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/User"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/home/findBanner": {
+			"get": {
+				"operationId": "首页Banner",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"updateTime": {
+												"type": "string"
+											},
+											"title": {
+												"type": "string"
+											},
+											"sort": {
+												"type": "number",
+												"format": "double"
+											},
+											"linkUrl": {
+												"type": "string"
+											},
+											"isDeleted": {
+												"type": "number",
+												"format": "double"
+											},
+											"imageUrl": {
+												"type": "string"
+											},
+											"id": {
+												"type": "number",
+												"format": "double"
+											},
+											"createTime": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"updateTime",
+											"title",
+											"sort",
+											"linkUrl",
+											"isDeleted",
+											"imageUrl",
+											"id",
+											"createTime"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "首页获取banner接口",
+				"tags": [
+					"首页相关接口"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/home/advertisement": {
+			"get": {
+				"operationId": "首页广告",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"imageUrl": {
+												"type": "string"
+											},
+											"id": {
+												"type": "number",
+												"format": "double"
+											},
+											"category2Id": {
+												"type": "number",
+												"format": "double"
+											}
+										},
+										"required": [
+											"imageUrl",
+											"id",
+											"category2Id"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "首页获取广告接口",
+				"tags": [
+					"首页相关接口"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/home/findListGoods": {
+			"get": {
+				"operationId": "首页获取商品",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Goods"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "首页获取商品接口",
+				"tags": [
+					"首页相关接口"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/home/getCategoryLevel1": {
+			"get": {
+				"operationId": "查询一级分类",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Category"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "首页获取分类接口",
+				"tags": [
+					"首页相关接口"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/goods/list": {
+			"post": {
+				"operationId": "查询商品",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GoodsResponseLimit"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"商品接口"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GoodsRequestLimit"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/goods/detail": {
+			"get": {
+				"operationId": "查询单个商品明细",
+				"responses": {
+					"200": {
+						"description": "Goods",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Goods"
+								}
+							}
+						}
+					}
+				},
+				"description": "查询单个商品",
+				"tags": [
+					"商品接口"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "商品唯一主键",
+						"in": "query",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/category/list": {
+			"get": {
+				"operationId": "查询分类",
+				"responses": {
+					"200": {
+						"description": "成功",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Category"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "获取所有分类信息",
+				"tags": [
+					"分类接口"
+				],
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

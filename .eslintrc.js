@@ -18,6 +18,7 @@ module.exports = {
     "no-console": "warn",
     "no-debugger": "error",
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-namespace": 0,
   },
 };

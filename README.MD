@@ -1,6 +1,6 @@
 # 小程序服务端
 
-基于 Koa + Typescript + Mysql 创建
+基于 Koa + tsoa + Typescript + Mysql 创建
 
 ## 安装环境
 
@@ -20,4 +20,13 @@ npm i -g pnpm
 
 ```sh
   pnpm start
+```
+
+## tsoa
+
+```sh
+  # 生成 路由 和 文档swagger.json
+  pnpm tsoa
+  # 生成文档swagger.json
+  pnpm tsoa:doc
 ```
