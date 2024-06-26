@@ -1,7 +1,7 @@
 import { goodsServers } from "../services/goods";
 import { categoryServers } from "../services/category";
-import { Controller, Route, Get, SuccessResponse, OperationId, Tags } from "tsoa";
-import { Category } from "../types/category";
+import { Controller, Route, Get, OperationId, Tags } from "tsoa";
+import { Goods, GoodsTypes } from "../types/prismaTypes";
 
 @Tags("首页相关接口")
 @Route("home")
@@ -12,7 +12,6 @@ export class HomeController extends Controller {
    */
   @OperationId("首页Banner")
   @Get("findBanner")
-  @SuccessResponse("200", "成功")
   async getGoodsBanners() {
     // 先mock数据
     const data = [
@@ -56,7 +55,6 @@ export class HomeController extends Controller {
    */
   @OperationId("首页广告")
   @Get("advertisement")
-  @SuccessResponse("200", "成功")
   async getAdvertisement() {
     const data = [
       {
@@ -84,10 +82,12 @@ export class HomeController extends Controller {
    */
   @OperationId("首页获取商品")
   @Get("findListGoods")
-  @SuccessResponse("200", "成功")
   async getGoods() {
-    const { data } = await goodsServers.getGoods();
-    return data;
+    const { data } = await goodsServers.getGoods({
+      goodsOnSale: true,
+      goodsIsDel: false
+    });
+    return data as unknown as Goods[];
   }
 
   /**
@@ -96,10 +96,9 @@ export class HomeController extends Controller {
    */
   @OperationId("查询一级分类")
   @Get("getCategoryLevel1")
-  @SuccessResponse("200", "成功")
-  async getCategoryLevel1(): Promise<Category[]> {
+  async getCategoryLevel1(): Promise<GoodsTypes[]> {
     const res = await categoryServers.getCategory();
-    return res.filter((item: Category) => !item.typeParentId);
+    return res.filter((item) => !item.typeParentId) as unknown as GoodsTypes[];
   }
 }
 

@@ -7,7 +7,7 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"WxUser": {
+			"WxUserDto": {
 				"properties": {
 					"code": {
 						"type": "string",
@@ -25,8 +25,66 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"User": {
+			"UserSex": {
+				"description": "此文件由generateTypes.ts自动生成\n不要手动编辑",
+				"enum": [
+					0,
+					1,
+					2
+				],
+				"type": "number"
+			},
+			"Clients": {
 				"properties": {
+					"userUpdate": {
+						"type": "string"
+					},
+					"userCreate": {
+						"type": "string"
+					},
+					"userBirth": {
+						"type": "string"
+					},
+					"userSex": {
+						"$ref": "#/components/schemas/UserSex"
+					},
+					"userAddress": {
+						"type": "string"
+					},
+					"userStatus": {
+						"type": "boolean"
+					},
+					"userOpenid": {
+						"type": "string"
+					},
+					"userPhone": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"userAvatar": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"userPhone",
+					"userName",
+					"userId"
+				],
+				"type": "object"
+			},
+			"UpdateUserDto": {
+				"properties": {
+					"userId": {
+						"type": "number",
+						"format": "double",
+						"description": "用户id"
+					},
 					"userName": {
 						"type": "string",
 						"description": "用户名"
@@ -58,6 +116,7 @@
 					}
 				},
 				"required": [
+					"userId",
 					"userName",
 					"userPhone",
 					"userAvatar"
@@ -65,142 +124,333 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Goods": {
+			"GoodsTypes": {
 				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double",
-						"description": "商品ID"
-					},
-					"goodsTypeId": {
-						"type": "number",
-						"format": "double",
-						"description": "商品类型ID"
-					},
-					"goodsName": {
-						"type": "string",
-						"description": "商品名称"
-					},
-					"goodsAmount": {
-						"type": "number",
-						"format": "double",
-						"description": "商品库存"
-					},
-					"goodsPrice": {
-						"type": "number",
-						"format": "double",
-						"description": "商品价格"
-					},
-					"goodsMarkPrice": {
-						"type": "number",
-						"format": "double",
-						"description": "商品划线价格"
-					},
-					"goodsCostPrice": {
-						"type": "number",
-						"format": "double",
-						"description": "商品成本价"
-					},
-					"goodsDesc": {
-						"type": "string",
-						"description": "商品描述"
-					},
-					"goodsImgs": {
+					"goods": {
 						"items": {
-							"type": "string"
+							"$ref": "#/components/schemas/Goods"
 						},
-						"type": "array",
-						"description": "商品图片"
-					},
-					"goodsSellCount": {
-						"type": "number",
-						"format": "double",
-						"description": "商品已售量"
-					},
-					"goodsCreate": {
-						"type": "string",
-						"description": "商品创建时间"
-					},
-					"goodsUpdate": {
-						"type": "string",
-						"description": "商品更新时间"
-					},
-					"goodsUser": {
-						"type": "string",
-						"description": "商品所属用户"
-					},
-					"goodsUserId": {
-						"type": "number",
-						"format": "double",
-						"description": "商品所属用户id"
-					},
-					"goodsComments": {
-						"items": {},
-						"type": "array",
-						"description": "商品评论"
-					}
-				},
-				"required": [
-					"id",
-					"goodsTypeId",
-					"goodsName",
-					"goodsAmount",
-					"goodsPrice",
-					"goodsMarkPrice",
-					"goodsCostPrice",
-					"goodsImgs",
-					"goodsSellCount",
-					"goodsCreate",
-					"goodsUpdate",
-					"goodsComments"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Category": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double",
-						"description": "分类id"
-					},
-					"typeName": {
-						"type": "string",
-						"description": "分类名称"
-					},
-					"typeImg": {
-						"type": "string",
-						"description": "分类图片"
-					},
-					"typeEnable": {
-						"type": "boolean",
-						"description": "是否启用"
-					},
-					"typeParentId": {
-						"type": "number",
-						"format": "double",
-						"description": "父级分类id"
+						"type": "array"
 					},
 					"children": {
 						"items": {
-							"$ref": "#/components/schemas/Category"
+							"$ref": "#/components/schemas/GoodsTypes"
 						},
-						"type": "array",
-						"description": "子类"
+						"type": "array"
+					},
+					"typeParent": {
+						"$ref": "#/components/schemas/GoodsTypes"
+					},
+					"typeParentId": {
+						"type": "number",
+						"format": "double"
+					},
+					"typeEnable": {
+						"type": "boolean"
+					},
+					"typeImg": {
+						"type": "string"
+					},
+					"typeName": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
-					"id",
+					"goods",
+					"children",
+					"typeEnable",
 					"typeName",
-					"typeEnable"
+					"id"
 				],
-				"type": "object",
-				"additionalProperties": false
+				"type": "object"
+			},
+			"Goods": {
+				"properties": {
+					"orderGoods": {
+						"$ref": "#/components/schemas/OrderGoods"
+					},
+					"cartGoods": {
+						"$ref": "#/components/schemas/CartGoods"
+					},
+					"goodsComments": {
+						"items": {
+							"$ref": "#/components/schemas/Comment"
+						},
+						"type": "array"
+					},
+					"goodsType": {
+						"$ref": "#/components/schemas/GoodsTypes"
+					},
+					"goodsUserId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsUser": {
+						"type": "string"
+					},
+					"goodsUpdate": {
+						"type": "string"
+					},
+					"goodsCreate": {
+						"type": "string"
+					},
+					"goodsIsDel": {
+						"type": "boolean"
+					},
+					"goodsSellCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsDesc": {
+						"type": "string"
+					},
+					"goodsOnSale": {
+						"type": "boolean"
+					},
+					"goodsTypeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsImgs": {
+						"type": "string"
+					},
+					"goodsAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsCostPrice": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsMarkPrice": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsPrice": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsName": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"goodsComments",
+					"goodsType",
+					"goodsUpdate",
+					"goodsCreate",
+					"goodsSellCount",
+					"goodsTypeId",
+					"goodsImgs",
+					"goodsAmount",
+					"goodsCostPrice",
+					"goodsMarkPrice",
+					"goodsPrice",
+					"goodsName",
+					"id"
+				],
+				"type": "object"
+			},
+			"Comment": {
+				"properties": {
+					"goods": {
+						"$ref": "#/components/schemas/Goods"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/Comment"
+						},
+						"type": "array"
+					},
+					"parent": {
+						"$ref": "#/components/schemas/Comment"
+					},
+					"authorId": {
+						"type": "number",
+						"format": "double"
+					},
+					"parentId": {
+						"type": "number",
+						"format": "double"
+					},
+					"content": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"goods",
+					"children",
+					"authorId",
+					"content",
+					"id",
+					"goodsId"
+				],
+				"type": "object"
+			},
+			"CartGoods": {
+				"properties": {
+					"goods": {
+						"$ref": "#/components/schemas/Goods"
+					},
+					"cart": {
+						"$ref": "#/components/schemas/Cart"
+					},
+					"goodsIsChecked": {
+						"type": "boolean"
+					},
+					"goodsCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsId": {
+						"type": "number",
+						"format": "double"
+					},
+					"cartId": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"goods",
+					"cart",
+					"goodsIsChecked",
+					"goodsCount",
+					"goodsId",
+					"cartId",
+					"id"
+				],
+				"type": "object"
+			},
+			"Cart": {
+				"properties": {
+					"cartGoods": {
+						"items": {
+							"$ref": "#/components/schemas/CartGoods"
+						},
+						"type": "array"
+					},
+					"cartUserId": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"cartGoods",
+					"cartUserId",
+					"id"
+				],
+				"type": "object"
+			},
+			"OrderGoods": {
+				"properties": {
+					"order": {
+						"$ref": "#/components/schemas/Orders"
+					},
+					"goods": {
+						"$ref": "#/components/schemas/Goods"
+					},
+					"goodsCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"goodsId": {
+						"type": "number",
+						"format": "double"
+					},
+					"orderId": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"order",
+					"goods",
+					"goodsCount",
+					"goodsId",
+					"orderId",
+					"id"
+				],
+				"type": "object"
+			},
+			"Orders": {
+				"properties": {
+					"orderGoods": {
+						"items": {
+							"$ref": "#/components/schemas/OrderGoods"
+						},
+						"type": "array"
+					},
+					"orderUserId": {
+						"type": "number",
+						"format": "double"
+					},
+					"orderUpdate": {
+						"type": "string"
+					},
+					"orderCreate": {
+						"type": "string"
+					},
+					"orderStatus": {
+						"type": "number",
+						"format": "double"
+					},
+					"orderComment": {
+						"type": "string"
+					},
+					"orderNo": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"orderGoods",
+					"orderUserId",
+					"orderStatus",
+					"orderComment",
+					"orderNo",
+					"id"
+				],
+				"type": "object"
 			},
 			"GoodsResponseLimit": {
 				"properties": {
 					"records": {
-						"$ref": "#/components/schemas/Goods",
+						"items": {
+							"$ref": "#/components/schemas/Goods"
+						},
+						"type": "array",
 						"description": "商品列表"
 					},
 					"total": {
@@ -228,7 +478,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"GoodsRequest": {
+			"GoodsRequestLimitDto": {
 				"properties": {
 					"goodsTypeId": {
 						"type": "number",
@@ -238,36 +488,24 @@
 					"goodsName": {
 						"type": "string",
 						"description": "商品名称"
+					},
+					"pageSize": {
+						"type": "number",
+						"format": "double",
+						"description": "每页显示的条数"
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "当前页码"
 					}
 				},
+				"required": [
+					"pageSize",
+					"page"
+				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"GoodsRequestLimit": {
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/GoodsRequest"
-					},
-					{
-						"properties": {
-							"page": {
-								"type": "number",
-								"format": "double",
-								"description": "当前页码"
-							},
-							"pageSize": {
-								"type": "number",
-								"format": "double",
-								"description": "每页显示的条数"
-							}
-						},
-						"required": [
-							"page",
-							"pageSize"
-						],
-						"type": "object"
-					}
-				]
 			}
 		},
 		"securitySchemes": {}
@@ -288,7 +526,7 @@
 				"operationId": "登录",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -315,7 +553,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/WxUser"
+								"$ref": "#/components/schemas/WxUserDto"
 							}
 						}
 					}
@@ -327,19 +565,11 @@
 				"operationId": "修改用户信息",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/Clients"
 								}
 							}
 						}
@@ -356,7 +586,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/User"
+								"$ref": "#/components/schemas/UpdateUserDto"
 							}
 						}
 					}
@@ -368,7 +598,7 @@
 				"operationId": "首页Banner",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "banner数据",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -433,7 +663,7 @@
 				"operationId": "首页广告",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "广告数据",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -477,7 +707,7 @@
 				"operationId": "首页获取商品",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "热门商品",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -503,12 +733,12 @@
 				"operationId": "查询一级分类",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "分类数据",
 						"content": {
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/Category"
+										"$ref": "#/components/schemas/GoodsTypes"
 									},
 									"type": "array"
 								}
@@ -539,6 +769,7 @@
 						}
 					}
 				},
+				"description": "分页查询商品",
 				"tags": [
 					"商品接口"
 				],
@@ -549,7 +780,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/GoodsRequestLimit"
+								"$ref": "#/components/schemas/GoodsRequestLimitDto"
 							}
 						}
 					}
@@ -595,12 +826,112 @@
 				"operationId": "查询分类",
 				"responses": {
 					"200": {
-						"description": "成功",
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/Category"
+										"allOf": [
+											{
+												"properties": {
+													"children": {
+														"items": {
+															"properties": {
+																"typeParentId": {
+																	"type": "number",
+																	"format": "double"
+																},
+																"typeEnable": {
+																	"type": "boolean"
+																},
+																"typeImg": {
+																	"type": "string"
+																},
+																"typeName": {
+																	"type": "string"
+																},
+																"id": {
+																	"type": "number",
+																	"format": "double"
+																}
+															},
+															"required": [
+																"typeParentId",
+																"typeEnable",
+																"typeImg",
+																"typeName",
+																"id"
+															],
+															"type": "object"
+														},
+														"type": "array"
+													},
+													"typeParent": {
+														"properties": {
+															"typeParentId": {
+																"type": "number",
+																"format": "double"
+															},
+															"typeEnable": {
+																"type": "boolean"
+															},
+															"typeImg": {
+																"type": "string"
+															},
+															"typeName": {
+																"type": "string"
+															},
+															"id": {
+																"type": "number",
+																"format": "double"
+															}
+														},
+														"required": [
+															"typeParentId",
+															"typeEnable",
+															"typeImg",
+															"typeName",
+															"id"
+														],
+														"type": "object"
+													}
+												},
+												"required": [
+													"children",
+													"typeParent"
+												],
+												"type": "object"
+											},
+											{
+												"properties": {
+													"typeParentId": {
+														"type": "number",
+														"format": "double"
+													},
+													"typeEnable": {
+														"type": "boolean"
+													},
+													"typeImg": {
+														"type": "string"
+													},
+													"typeName": {
+														"type": "string"
+													},
+													"id": {
+														"type": "number",
+														"format": "double"
+													}
+												},
+												"required": [
+													"typeParentId",
+													"typeEnable",
+													"typeImg",
+													"typeName",
+													"id"
+												],
+												"type": "object"
+											}
+										]
 									},
 									"type": "array"
 								}

@@ -31,3 +31,9 @@ export const TOKEN_EXPIRED_TIME = 60 * 60 * 24; // 1天;
 export const TOKEN_REFRESH_TIME = 60 * 2;
 
 export const JWT_SECRET_KEY = "JWT_TOKEN";
+
+/**
+ * 手机正则
+ */
+export const phoneRex =
+  /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;

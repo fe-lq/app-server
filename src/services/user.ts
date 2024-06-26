@@ -1,3 +1,4 @@
+import { omit } from "lodash";
 import db, { Prisma } from "../db";
 class UserServers {
   /**
@@ -12,9 +13,10 @@ class UserServers {
   /**
    * 修改用户
    */
-  updateUser = async (params: Prisma.ClientsCreateInput) => {
-    const res = await db.clients.create({
-      data: params
+  updateUser = async (params: Prisma.ClientsUpdateInput & { userId: number }) => {
+    const res = await db.clients.update({
+      where: { userId: params.userId },
+      data: omit(params, "userId")
     });
     return res;
   };

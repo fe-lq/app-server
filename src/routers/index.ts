@@ -16,7 +16,7 @@ import type * as KoaRouter from "@koa/router";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-  WxUser: {
+  WxUserDto: {
     dataType: "refObject",
     properties: {
       code: { dataType: "string", required: true },
@@ -25,9 +25,36 @@ const models: TsoaRoute.Models = {
     additionalProperties: false
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  User: {
+  UserSex: {
+    dataType: "refEnum",
+    enums: [0, 1, 2]
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  Clients: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        userUpdate: { dataType: "string" },
+        userCreate: { dataType: "string" },
+        userBirth: { dataType: "string" },
+        userSex: { ref: "UserSex" },
+        userAddress: { dataType: "string" },
+        userStatus: { dataType: "boolean" },
+        userOpenid: { dataType: "string" },
+        userPhone: { dataType: "string", required: true },
+        userName: { dataType: "string", required: true },
+        userAvatar: { dataType: "string" },
+        userId: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  UpdateUserDto: {
     dataType: "refObject",
     properties: {
+      userId: { dataType: "double", required: true },
       userName: { dataType: "string", required: true },
       userPhone: { dataType: "string", required: true },
       userAvatar: { dataType: "string", required: true },
@@ -45,45 +72,160 @@ const models: TsoaRoute.Models = {
     additionalProperties: false
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  Goods: {
-    dataType: "refObject",
-    properties: {
-      id: { dataType: "double", required: true },
-      goodsTypeId: { dataType: "double", required: true },
-      goodsName: { dataType: "string", required: true },
-      goodsAmount: { dataType: "double", required: true },
-      goodsPrice: { dataType: "double", required: true },
-      goodsMarkPrice: { dataType: "double", required: true },
-      goodsCostPrice: { dataType: "double", required: true },
-      goodsDesc: { dataType: "string" },
-      goodsImgs: { dataType: "array", array: { dataType: "string" }, required: true },
-      goodsSellCount: { dataType: "double", required: true },
-      goodsCreate: { dataType: "string", required: true },
-      goodsUpdate: { dataType: "string", required: true },
-      goodsUser: { dataType: "string" },
-      goodsUserId: { dataType: "double" },
-      goodsComments: { dataType: "array", array: { dataType: "any" }, required: true }
-    },
-    additionalProperties: false
+  GoodsTypes: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        goods: { dataType: "array", array: { dataType: "refAlias", ref: "Goods" }, required: true },
+        children: {
+          dataType: "array",
+          array: { dataType: "refAlias", ref: "GoodsTypes" },
+          required: true
+        },
+        typeParent: { ref: "GoodsTypes" },
+        typeParentId: { dataType: "double" },
+        typeEnable: { dataType: "boolean", required: true },
+        typeImg: { dataType: "string" },
+        typeName: { dataType: "string", required: true },
+        id: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  Category: {
-    dataType: "refObject",
-    properties: {
-      id: { dataType: "double", required: true },
-      typeName: { dataType: "string", required: true },
-      typeImg: { dataType: "string" },
-      typeEnable: { dataType: "boolean", required: true },
-      typeParentId: { dataType: "double" },
-      children: { dataType: "array", array: { dataType: "refObject", ref: "Category" } }
-    },
-    additionalProperties: false
+  Goods: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        orderGoods: { ref: "OrderGoods" },
+        cartGoods: { ref: "CartGoods" },
+        goodsComments: {
+          dataType: "array",
+          array: { dataType: "refAlias", ref: "Comment" },
+          required: true
+        },
+        goodsType: { ref: "GoodsTypes", required: true },
+        goodsUserId: { dataType: "double" },
+        goodsUser: { dataType: "string" },
+        goodsUpdate: { dataType: "string", required: true },
+        goodsCreate: { dataType: "string", required: true },
+        goodsIsDel: { dataType: "boolean" },
+        goodsSellCount: { dataType: "double", required: true },
+        goodsDesc: { dataType: "string" },
+        goodsOnSale: { dataType: "boolean" },
+        goodsTypeId: { dataType: "double", required: true },
+        goodsImgs: { dataType: "string", required: true },
+        goodsAmount: { dataType: "double", required: true },
+        goodsCostPrice: { dataType: "double", required: true },
+        goodsMarkPrice: { dataType: "double", required: true },
+        goodsPrice: { dataType: "double", required: true },
+        goodsName: { dataType: "string", required: true },
+        id: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  Comment: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        goods: { ref: "Goods", required: true },
+        children: {
+          dataType: "array",
+          array: { dataType: "refAlias", ref: "Comment" },
+          required: true
+        },
+        parent: { ref: "Comment" },
+        authorId: { dataType: "double", required: true },
+        parentId: { dataType: "double" },
+        content: { dataType: "string", required: true },
+        id: { dataType: "double", required: true },
+        goodsId: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  CartGoods: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        goods: { ref: "Goods", required: true },
+        cart: { ref: "Cart", required: true },
+        goodsIsChecked: { dataType: "boolean", required: true },
+        goodsCount: { dataType: "double", required: true },
+        goodsId: { dataType: "double", required: true },
+        cartId: { dataType: "double", required: true },
+        id: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  Cart: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        cartGoods: {
+          dataType: "array",
+          array: { dataType: "refAlias", ref: "CartGoods" },
+          required: true
+        },
+        cartUserId: { dataType: "double", required: true },
+        id: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  OrderGoods: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        order: { ref: "Orders", required: true },
+        goods: { ref: "Goods", required: true },
+        goodsCount: { dataType: "double", required: true },
+        goodsId: { dataType: "double", required: true },
+        orderId: { dataType: "double", required: true },
+        id: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  Orders: {
+    dataType: "refAlias",
+    type: {
+      dataType: "nestedObjectLiteral",
+      nestedProperties: {
+        orderGoods: {
+          dataType: "array",
+          array: { dataType: "refAlias", ref: "OrderGoods" },
+          required: true
+        },
+        orderUserId: { dataType: "double", required: true },
+        orderUpdate: { dataType: "string" },
+        orderCreate: { dataType: "string" },
+        orderStatus: { dataType: "double", required: true },
+        orderComment: { dataType: "string", required: true },
+        orderNo: { dataType: "string", required: true },
+        id: { dataType: "double", required: true }
+      },
+      validators: {}
+    }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   GoodsResponseLimit: {
     dataType: "refObject",
     properties: {
-      records: { ref: "Goods", required: true },
+      records: { dataType: "array", array: { dataType: "refAlias", ref: "Goods" }, required: true },
       total: { dataType: "double", required: true },
       page: { dataType: "double", required: true },
       pageSize: { dataType: "double", required: true }
@@ -91,31 +233,15 @@ const models: TsoaRoute.Models = {
     additionalProperties: false
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  GoodsRequest: {
+  GoodsRequestLimitDto: {
     dataType: "refObject",
     properties: {
       goodsTypeId: { dataType: "double" },
-      goodsName: { dataType: "string" }
+      goodsName: { dataType: "string" },
+      pageSize: { dataType: "double", required: true },
+      page: { dataType: "double", required: true }
     },
     additionalProperties: false
-  },
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  GoodsRequestLimit: {
-    dataType: "refAlias",
-    type: {
-      dataType: "intersection",
-      subSchemas: [
-        { ref: "GoodsRequest" },
-        {
-          dataType: "nestedObjectLiteral",
-          nestedProperties: {
-            page: { dataType: "double", required: true },
-            pageSize: { dataType: "double", required: true }
-          }
-        }
-      ],
-      validators: {}
-    }
   }
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -138,7 +264,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
     async function UserController_login(context: Context, next: Next) {
       const args: Record<string, TsoaRoute.ParameterSchema> = {
-        params: { in: "body", name: "params", required: true, ref: "WxUser" }
+        params: { in: "body", name: "params", required: true, ref: "WxUserDto" }
       };
 
       let validatedArgs: any[] = [];
@@ -158,7 +284,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );
@@ -170,7 +296,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
     async function UserController_updateUser(context: Context, next: Next) {
       const args: Record<string, TsoaRoute.ParameterSchema> = {
-        params: { in: "body", name: "params", required: true, ref: "User" }
+        params: { in: "body", name: "params", required: true, ref: "UpdateUserDto" }
       };
 
       let validatedArgs: any[] = [];
@@ -190,7 +316,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );
@@ -220,7 +346,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );
@@ -250,7 +376,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );
@@ -280,7 +406,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );
@@ -310,7 +436,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );
@@ -322,7 +448,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
     async function GoodsController_getGoodsList(context: Context, next: Next) {
       const args: Record<string, TsoaRoute.ParameterSchema> = {
-        params: { in: "body", name: "params", required: true, ref: "GoodsRequestLimit" }
+        params: { in: "body", name: "params", required: true, ref: "GoodsRequestLimitDto" }
       };
 
       let validatedArgs: any[] = [];
@@ -404,7 +530,7 @@ export function RegisterRoutes(router: KoaRouter) {
         controller,
         context,
         validatedArgs,
-        successStatus: 200
+        successStatus: undefined
       });
     }
   );

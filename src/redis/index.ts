@@ -9,6 +9,7 @@ class RedisClient {
   initRedis() {
     client.on("error", (err) => {
       logger.error(err.message);
+      client.disconnect();
     });
     client.connect();
     client.on("end", function () {

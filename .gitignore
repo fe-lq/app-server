@@ -4,3 +4,5 @@ dist
 
 *.log
 *.DS_Store
+# 自动生成的prisma类型
+src/types/prismaTypes.ts

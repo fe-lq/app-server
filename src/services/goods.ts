@@ -1,30 +1,24 @@
-import { omit } from "lodash";
-import db from "../db";
-import { Goods, GoodsRequest, GoodsRequestLimit } from "../types/goods";
+import db, { Prisma } from "../db";
+import { GoodsRequestLimitDto } from "../dto/goods";
 class GoodsServers {
   /**
    * 分页查询商品接口
    */
-  getGoodsLimit = async (params: GoodsRequestLimit) => {
-    const dbParams = {
-      ...omit(params, ["page", "pageSize"]),
-      goodsOnSale: true,
-      goodsName: {
-        contains: params?.goodsName
-      },
-      goodsIsDel: false
-    };
-    const total = await db.goods.count({ where: dbParams });
+  getGoodsLimit = async (
+    params: Prisma.GoodsWhereInput,
+    { pageSize, page }: GoodsRequestLimitDto
+  ) => {
+    const total = await db.goods.count({ where: params });
     const res = await db.goods.findMany({
-      where: dbParams,
-      take: params.pageSize,
-      skip: (params.page - 1) * params.pageSize
+      where: params,
+      take: pageSize,
+      skip: (page - 1) * pageSize
     });
     return {
       data: res.map((item) => ({
         ...item,
         goodsImgs: item.goodsImgs.split(",")
-      })) as unknown as Goods[],
+      })),
       total
     };
   };
@@ -33,24 +27,15 @@ class GoodsServers {
    * 查询商品接口
    * @param params
    */
-  getGoods = async (params?: GoodsRequest) => {
-    const dbParams = {
-      ...params,
-      goodsOnSale: true,
-      goodsName: {
-        contains: params?.goodsName
-      },
-      goodsIsDel: false
-    };
-
+  getGoods = async (params?: Prisma.GoodsWhereInput) => {
     const res = await db.goods.findMany({
-      where: dbParams
+      where: params
     });
     return {
       data: res.map((item) => ({
         ...item,
         goodsImgs: item.goodsImgs.split(",")
-      })) as unknown as Goods[]
+      }))
     };
   };
 
@@ -66,7 +51,7 @@ class GoodsServers {
     return {
       ...res,
       goodsImgs: res?.goodsImgs.split(",")
-    } as unknown as Goods;
+    };
   };
 }
 export const goodsServers = new GoodsServers();

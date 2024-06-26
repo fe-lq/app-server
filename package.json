@@ -8,12 +8,13 @@
     "build": "tsc",
     "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
+    "prepare": "prisma generate && husky install",
     "push": "prisma db push",
     "pull": "prisma db pull",
-    "gen": "prisma generate",
-    "prepare": "prisma generate && husky install",
+    "gen": "prisma generate && pnpm genType",
     "tsoa": "tsoa spec-and-routes",
-    "tsoa:doc": "tsoa spec"
+    "tsoa:doc": "tsoa spec",
+    "genType": "ts-node scripts/generateTypes.ts"
   },
   "keywords": [],
   "author": "LiuQi",
@@ -24,8 +25,10 @@
   "dependencies": {
     "@koa/router": "^12.0.1",
     "@prisma/client": "5.10.2",
+    "@prisma/internals": "^5.15.1",
     "@tsoa/runtime": "^6.2.1",
     "ali-oss": "^6.20.0",
+    "class-validator": "^0.14.1",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.14.2",
@@ -38,6 +41,7 @@
     "node-fetch": "^2.7.0",
     "node-schedule": "^2.1.1",
     "redis": "^4.6.12",
+    "reflect-metadata": "^0.2.2",
     "tsoa": "^6.2.1",
     "uuid": "^9.0.1",
     "winston": "^3.10.0"

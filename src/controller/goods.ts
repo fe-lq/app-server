@@ -10,21 +10,39 @@ import {
   Tags,
   Query
 } from "tsoa";
-import { Goods, GoodsRequestLimit, GoodsResponseLimit } from "../types/goods";
+import { Goods } from "../types/prismaTypes";
+import { GoodsRequestLimitDto } from "../dto/goods";
+import { GoodsResponseLimit } from "../types/goods";
+import { omit, pick } from "lodash";
+import { ValidateParams } from "../utils/decorators";
 
 @Tags("商品接口")
 @Route("goods")
 @SuccessResponse("200", "成功")
 export class GoodsController extends Controller {
+  /**
+   * 分页查询商品
+   * @param params
+   * @returns
+   */
   @OperationId("查询商品")
   @Post("list")
-  /**
-   * 查询商品
-   */
-  async getGoodsList(@Body() params: GoodsRequestLimit): Promise<GoodsResponseLimit> {
-    const { data, total } = await goodsServers.getGoodsLimit(params);
+  @ValidateParams()
+  async getGoodsList(@Body() params: GoodsRequestLimitDto): Promise<GoodsResponseLimit> {
+    const dbParams = {
+      ...omit(params, ["page", "pageSize"]),
+      goodsOnSale: true,
+      goodsName: {
+        contains: params?.goodsName
+      },
+      goodsIsDel: false
+    };
+    const { data, total } = await goodsServers.getGoodsLimit(
+      dbParams,
+      pick(params, ["page", "pageSize"])
+    );
     return {
-      records: data,
+      records: data as unknown as Goods[],
       total,
       page: params.page,
       pageSize: params.pageSize
@@ -38,7 +56,8 @@ export class GoodsController extends Controller {
    */
   @OperationId("查询单个商品明细")
   @Get("detail")
-  async getGoodsDetail(@Query() id: number): Promise<Goods> {
-    return await goodsServers.getGoodsDetail({ id });
+  @ValidateParams()
+  async getGoodsDetail(@Query() id: number) {
+    return (await goodsServers.getGoodsDetail({ id })) as unknown as Goods;
   }
 }

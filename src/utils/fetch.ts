@@ -1,6 +1,9 @@
 import fetch from "node-fetch";
 import { logger } from "../logs";
 
+/**
+ * fetch工具类，用于请求第三方接口
+ */
 class FetchUtil {
   async get(url: string, params: any) {
     try {
